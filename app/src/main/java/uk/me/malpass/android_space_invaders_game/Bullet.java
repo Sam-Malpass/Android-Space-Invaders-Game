@@ -27,6 +27,16 @@ public abstract class Bullet {
             return y;
         }
     }
+    public boolean shoot(float startX, float startY, int direction) {
+        if(!active) {
+            x = startX;
+            y = startY;
+            heading = direction;
+            active = true;
+            return true;
+        }
+        return false;
+    }
     public RectF getRect() {
         return rect;
     }
