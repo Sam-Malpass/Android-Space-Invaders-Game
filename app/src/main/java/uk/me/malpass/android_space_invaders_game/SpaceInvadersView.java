@@ -93,4 +93,24 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
             }
         }
     }
+    @Override
+    public void run()   {
+        while(playing) {
+            long startFrameTime = System.currentTimeMillis();
+            if (!paused) {
+                update();
+            }
+            draw();
+            timeThisFrame = System.currentTimeMillis() - startFrameTime;
+            if (timeThisFrame >= 1) {
+                fps = 1000 / timeThisFrame;
+            }
+            if(!paused) {
+                if((startFrameTime - lastAnimTime) > animationInterval) {
+                    lastAnimTime = System.currentTimeMillis();
+                    uhOrOh = !uhOrOh;
+                }
+            }
+        }
+    }
 }
