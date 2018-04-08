@@ -29,4 +29,10 @@ public class MainMenu extends Activity {
         }
         SpaceInvadersView.resume();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SpaceInvadersView.pause();
+    }
 }
