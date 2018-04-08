@@ -18,4 +18,13 @@ public class Brick {
         int startHeight = screenY - (screenY / 8 * 2);
         rect = new RectF(column * width + blockPadding + (shelterPaddig * shelterNumber) + shelterPaddig + shelterPaddig * shelterNumber, row * height + blockPadding + startHeight, column * width + width - blockPadding + (shelterPaddig * shelterNumber) + shelterPaddig + shelterPaddig * shelterNumber, row * height + height - blockPadding + startHeight);
     }
+    public RectF getRect() {
+        return this.rect;
+    }
+    public void setInvisible() {
+        visibile = false;
+    }
+    public boolean getVisibility() {
+        return visibile;
+    }
 }
