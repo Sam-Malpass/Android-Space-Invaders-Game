@@ -2,6 +2,7 @@ package uk.me.malpass.android_space_invaders_game;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.SurfaceHolder;
@@ -214,6 +215,40 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                     }
                 }
             }
+        }
+    }
+    private void draw() {
+        if(holder.getSurface().isValid()) {
+            canvas = holder.lockCanvas();
+            canvas.drawColor(Color.argb(255,0,0,0));
+            paint.setColor(Color.argb(255, 255,255,255));
+            canvas.drawBitmap(player.getBitmap(), player.getX(), screenY - 50, paint);
+            for(int i = 0; i < numInvaders; i++) {
+                if(invaders[i].getVisible()) {
+                    if (uhOrOh) {
+                        canvas.drawBitmap(invaders[i].getBitmap1(), invaders[i].getX(), invaders[i].getY(), paint);
+                    } else {
+                        canvas.drawBitmap(invaders[i].getBitmap2(), invaders[i].getX(), invaders[i].getY(), paint);
+                    }
+                }
+            }
+            for(int i = 0; i < numBlocks; i++) {
+                if(blocks[i].getVisibility()) {
+                    canvas.drawRect(blocks[i].getRect(), paint);
+                }
+            }
+            if(bullet.getStatus()) {
+                canvas.drawRect(bullet.getRect(), paint);
+            }
+            for(int i = 0; i < invaderBullets.length; i++) {
+                if(invaderBullets[i].getStatus()) {
+                    canvas.drawRect(invaderBullets[i].getRect(), paint);
+                }
+            }
+            paint.setColor(Color.argb(255, 249, 129, 0));
+            paint.setTextSize(40);
+            canvas.drawText("Score: " + score + "   Lives: " + playerLives, 10, 50, paint);
+            holder.unlockCanvasAndPost(canvas);
         }
     }
 }
