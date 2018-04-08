@@ -7,12 +7,66 @@
     tools:context="uk.me.malpass.android_space_invaders_game.MainMenu">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:id="@+id/title"
+        android:layout_width="421dp"
+        android:layout_height="67dp"
+        android:text="Space Invaders"
+        android:textSize="50sp"
+        android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.122" />
+
+    <Button
+        android:id="@+id/play"
+        android:layout_width="166dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="24dp"
+        android:text="Play"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <Button
+        android:id="@+id/leaderboard"
+        android:layout_width="166dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="12dp"
+        android:text="Leaderboard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/play" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="166dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="@+id/play"
+        app:layout_constraintTop_toBottomOf="@+id/play">
+    </com.google.android.gms.common.SignInButton>
+
+    <TextView
+        android:id="@+id/loggedIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="212dp"
+        android:layout_marginStart="213dp"
+        android:text="Logged in as:"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="N/A"
+        app:layout_constraintBaseline_toBaselineOf="@+id/loggedIn"
+        app:layout_constraintStart_toEndOf="@+id/loggedIn" />
 
 </android.support.constraint.ConstraintLayout>
