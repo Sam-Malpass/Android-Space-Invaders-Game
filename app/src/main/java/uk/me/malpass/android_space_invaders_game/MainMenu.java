@@ -20,4 +20,13 @@ public class MainMenu extends Activity {
     public void onBackPressed() {
         moveTaskToBack(true);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(SpaceInvadersView.started == true) {
+            setContentView(SpaceInvadersView);
+        }
+        SpaceInvadersView.resume();
+    }
 }
