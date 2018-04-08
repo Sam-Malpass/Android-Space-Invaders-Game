@@ -37,6 +37,18 @@ public abstract class Bullet {
         }
         return false;
     }
+    public void update(long fps) {
+        if(heading == UP) {
+            y = y - speed / fps;
+        }
+        else {
+            y = y + speed / fps;
+        }
+        rect.left = x;
+        rect.right = x + width;
+        rect.top = y;
+        rect.bottom = y + height;
+    }
     public RectF getRect() {
         return rect;
     }
