@@ -8,6 +8,8 @@ import android.view.SurfaceView;
 
 import com.google.android.gms.games.Player;
 
+import java.util.Random;
+
 /**
  * Created by sam on 08/04/2018.
  */
@@ -48,5 +50,47 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
         paint = new Paint();
         screenX = x;
         screenY = y;
+    }
+
+    public void prepareLevel() {
+        started = true;
+        animationInterval = 1000;
+        player = new Player(context, screenX, screenY);
+        bullet = new BasicBullet(screenY);
+        for(int i = 0; i < invaderBullets.length; i++) {
+            invaderBullets[i] = new BasicBullet(screenY);
+        }
+        numInvaders = 0;
+        for(int column = 0; column < 6; column++) {
+            for(int row = 0; row < 5; row++) {
+                Random choice = new Random();
+                int option = choice.nextInt(4);
+                switch(option) {
+                    case 1:
+                        invaders[numInvaders] = new BasicInvader(context, row, column, screenX, screenY);
+                        break;
+                    case 2:
+                        invaders[numInvaders] = new ToughInvader(context, row, column, screenX, screenY);
+                        break;
+                    case 3:
+                        invaders[numInvaders] = new PowerInvader(context, row, column, screenX, screenY);
+                        break;
+                    default:
+                        invaders[numInvaders] = new BasicInvader(context, row, column, screenX, screenY);
+                        break;
+                }
+                numInvaders++;
+            }
+        }
+        remainingInvaders = numInvaders;
+        numBlocks = 0;
+        for(int i = 0; i < 4; i++) {
+            for(int c = 0; c < 10; c++) {
+                for(int r = 0; r < 5; r++) {
+                    blocks[numBlocks] = new Brick(r, c, i, screenX, screenY);
+                    numBlocks++;
+                }
+            }
+        }
     }
 }
