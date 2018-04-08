@@ -24,4 +24,12 @@ public abstract class Invader {
     public int moving = RIGHT;
     public boolean visible;
     public int lives;
+
+    public boolean destroyed(int damage) {
+        lives = lives - damage;
+        if(lives <= 0) {
+            return true;
+        }
+        return false;
+    }
 }
