@@ -260,4 +260,9 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
             Log.e("Error", "joining thread");
         }
     }
+    public void resume() {
+        playing = true;
+        gameThread = new Thread(this);
+        gameThread.start();
+    }
 }
