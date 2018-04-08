@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -264,5 +265,32 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
         playing = true;
         gameThread = new Thread(this);
         gameThread.start();
+    }
+    @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        switch (motionEvent.getAction() & motionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                paused = false;
+                if(motionEvent.getY() > screenY - screenY / 8) {
+                    if(motionEvent.getX() > screenX / 2) {
+                        player.setMovementState(player.RIGHT);
+                    }
+                    else {
+                        player.setMovementState(player.LEFT);
+                    }
+                }
+                if(motionEvent.getY() < screenY - screenY / 8) {
+                    if(bullet.shoot(player.getX() + player.getLength() / 2, screenY, bullet.UP)) {
+                      /*POSSIBLE SOUND INSERT*/
+                    }
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if(motionEvent.getY() > screenY -screenY / 10) {
+                    player.setMovementState(player.STOPPED);
+                }
+                break;
+        }
+        return true;
     }
 }
