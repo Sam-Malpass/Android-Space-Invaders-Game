@@ -30,7 +30,7 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
     public long timeThisFrame;
     public int screenX;
     public int screenY;
-    public Player player;
+    public uk.me.malpass.android_space_invaders_game.Player player;
     public Bullet bullet;
     public Invader[] invaders = new Invader[60];
     public int numInvaders;
@@ -58,7 +58,7 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
     public void prepareLevel() {
         started = true;
         animationInterval = 1000;
-        player = new Player(context, screenX, screenY);
+        player = new uk.me.malpass.android_space_invaders_game.Player(context, screenX, screenY);
         bullet = new BasicBullet(screenY);
         for(int i = 0; i < invaderBullets.length; i++) {
             invaderBullets[i] = new BasicBullet(screenY);

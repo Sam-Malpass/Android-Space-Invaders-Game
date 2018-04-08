@@ -44,4 +44,54 @@ public abstract class Invader {
         rect.left = x;
         rect.right = x + length;
     }
+    public void dropDown() {
+        if(moving == LEFT) {
+            moving = RIGHT;
+        }
+        else {
+            moving = LEFT;
+        }
+        y = y + height;
+        speed = speed * 1.18f;
+    }
+
+    public boolean takeAim(float playerX, float playerLength) {
+        int randomNumber = -1;
+        if((playerX + playerLength > x && playerX + playerLength < x + length) || (playerX > x && playerX < x + length)) {
+            randomNumber = generator.nextInt(150);
+            if(randomNumber == 0) {
+                return true;
+            }
+        }
+        randomNumber = generator.nextInt(2000);
+        if(randomNumber == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public void setInvisible() {
+        visible = false;
+    }
+    public boolean getVisible() {
+        return visible;
+    }
+    public RectF getRect() {
+        return rect;
+    }
+    public Bitmap getBitmap1() {
+        return bitmap1;
+    }
+    public Bitmap getBitmap2() {
+        return bitmap2;
+    }
+    public float getX() {
+        return x;
+    }
+    public float getY() {
+        return y;
+    }
+    public float getLength() {
+        return length;
+    }
 }
