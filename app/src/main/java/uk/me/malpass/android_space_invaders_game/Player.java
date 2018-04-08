@@ -44,4 +44,19 @@ public class Player {
         rect.left = x;
         rect.right = x + length;
     }
+    public RectF getRect() {
+        return rect;
+    }
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+    public float getX() {
+        return x;
+    }
+    public float getLength() {
+        return length;
+    }
+    public void setMovementState(int state) {
+        moving = state;
+    }
 }
