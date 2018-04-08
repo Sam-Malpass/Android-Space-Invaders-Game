@@ -40,4 +40,13 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
     public int playerLives = 3;
     public int remainingInvaders;
     public boolean started = false;
+
+    public SpaceInvadersView(Context context, int x, int y)  {
+        super(context);
+        this.context = context;
+        holder = getHolder();
+        paint = new Paint();
+        screenX = x;
+        screenY = y;
+    }
 }
