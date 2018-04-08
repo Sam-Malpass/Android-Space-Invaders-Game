@@ -32,4 +32,16 @@ public abstract class Invader {
         }
         return false;
     }
+    public void update(long fps) {
+        if(moving == LEFT) {
+            x = x - speed / fps;
+        }
+        if(moving == RIGHT) {
+            x = x + speed / fps;
+        }
+        rect.top = y;
+        rect.bottom = y + height;
+        rect.left = x;
+        rect.right = x + length;
+    }
 }
