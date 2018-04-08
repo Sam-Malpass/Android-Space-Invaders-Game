@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -249,6 +250,14 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
             paint.setTextSize(40);
             canvas.drawText("Score: " + score + "   Lives: " + playerLives, 10, 50, paint);
             holder.unlockCanvasAndPost(canvas);
+        }
+    }
+    public void pause() {
+        playing = false;
+        try {
+            gameThread.join();
+        } catch(InterruptedException e) {
+            Log.e("Error", "joining thread");
         }
     }
 }
