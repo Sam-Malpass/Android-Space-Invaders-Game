@@ -18,4 +18,14 @@ public abstract class Bullet {
     public int height;
     public boolean active;
     public int damage;
+    
+    public RectF getRect() {
+        return rect;
+    }
+    public boolean getStatus() {
+        return active;
+    }
+    public void setInactive() {
+        active = false;
+    }
 }
