@@ -18,7 +18,15 @@ public abstract class Bullet {
     public int height;
     public boolean active;
     public int damage;
-    
+
+    public float getImpactPoint() {
+        if(heading == DOWN) {
+            return y + height;
+        }
+        else {
+            return y;
+        }
+    }
     public RectF getRect() {
         return rect;
     }
