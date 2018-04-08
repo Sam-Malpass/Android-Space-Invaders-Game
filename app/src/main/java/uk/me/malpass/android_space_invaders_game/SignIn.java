@@ -7,7 +7,9 @@ import android.util.Log;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.games.Games;
 import com.google.android.gms.tasks.Task;
 
 import static com.google.android.gms.plus.PlusOneDummyView.TAG;
@@ -22,6 +24,11 @@ public class SignIn extends Activity {
     private static int RC_SIGN_IN = 100;
 
     public void signIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(Games.SCOPE_GAMES_LITE)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
