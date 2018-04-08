@@ -3,6 +3,7 @@ package uk.me.malpass.android_space_invaders_game;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -51,7 +52,6 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
         screenX = x;
         screenY = y;
     }
-
     public void prepareLevel() {
         started = true;
         animationInterval = 1000;
@@ -109,6 +109,109 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                 if((startFrameTime - lastAnimTime) > animationInterval) {
                     lastAnimTime = System.currentTimeMillis();
                     uhOrOh = !uhOrOh;
+                }
+            }
+        }
+    }
+    private void update() {
+        boolean bumped = false;
+        boolean lost = false;
+        player.update(fps);
+        for(int i = 0; i < numInvaders; i++) {
+            if(invaders[i].getVisible()) {
+                invaders[i].update(fps);
+                if(invaders[i].takeAim(player.getX(), player.getLength())) {
+                    if(invaders[i]instanceof PowerInvader) {
+                        invaderBullets[nextBullet] = new PowerBullet(screenY);
+                    }
+                    else {
+                        invaderBullets[nextBullet] = new BasicBullet(screenY);
+                    }
+                    if(invaderBullets[nextBullet].shoot(invaders[i].getX() + invaders[i].getLength() / 2, invaders[i].getY(), bullet.DOWN)) {
+                        nextBullet++;
+                        if(nextBullet == maxInvaderBullets) {
+                            nextBullet = 0;
+                        }
+                    }
+                }
+            }
+            if(invaders[i].getX() > screenX - invaders[i].getLength() || invaders[i].getX() < 0) {
+                bumped = true;
+            }
+        }
+        for(int i = 0; i < invaderBullets.length; i++) {
+            if(invaderBullets[i].getStatus()) {
+                invaderBullets[i].update(fps);
+            }
+        }
+        if(bumped) {
+            for(int i = 0; i < numInvaders; i++) {
+                invaders[i].dropDown();
+                if(invaders[i].getY() > screenY -screenY / 10) {
+                    lost = true;
+                    score = 0;
+                    playerLives = 3;
+                }
+            }
+        }
+        if(lost){
+            prepareLevel();
+        }
+        if(bullet.getStatus()) {
+            bullet.update(fps);
+        }
+        if(bullet.getImpactPoint() < 0) {
+            bullet.setInactive();
+        }
+        for(int i = 0; i < invaderBullets.length; i++) {
+            if(invaderBullets[i].getImpactPoint() > screenY) {
+                invaderBullets[i].setInactive();
+            }
+        }
+        if(bullet.getStatus()) {
+            for(int i = 0; i < numInvaders; i++){
+                if(invaders[i].getVisible()) {
+                    if(RectF.intersects(bullet.getRect(), invaders[i].getRect())) {
+                        if(invaders[i].destroyed(bullet.damage)) {
+                            invaders[i].setInvisible();
+                            remainingInvaders--;
+                        }
+                        bullet.setInactive();
+                        score = score + 10;
+
+                        if(remainingInvaders == 0)
+                        {
+                            paused = true;
+                            playerLives++;
+                            prepareLevel();
+                        }
+                    }
+                }
+            }
+            for(int i = 0; i < invaderBullets.length; i++) {
+                if(invaderBullets[i].getStatus()) {
+                    for(int j = 0; j < numBlocks; j++) {
+                        if(blocks[j].getVisibility()) {
+                            if(RectF.intersects(invaderBullets[i].getRect(), blocks[j].getRect())) {
+                                invaderBullets[i].setInactive();
+                                blocks[j].setInvisible();
+                            }
+                        }
+                    }
+                }
+            }
+            for(int i = 0; i < invaderBullets.length; i++) {
+                if(invaderBullets[i].getStatus()) {
+                    if(RectF.intersects(player.getRect(), invaderBullets[i].getRect())) {
+                        invaderBullets[i].setInactive();
+                        playerLives = playerLives - invaderBullets[i].damage;
+                        if(playerLives <= 0) {
+                            paused = true;
+                            playerLives = 3;
+                            score = 0;
+                            prepareLevel();
+                        }
+                    }
                 }
             }
         }
