@@ -130,18 +130,16 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
         while(playing) {
             long startFrameTime = System.currentTimeMillis();
             if (!paused) {
+                if((startFrameTime - lastAnimTime) > animationInterval) {
+                    lastAnimTime = System.currentTimeMillis();
+                    uhOrOh = !uhOrOh;
+                }
                 update();
             }
             draw();
             timeThisFrame = System.currentTimeMillis() - startFrameTime;
             if (timeThisFrame >= 1) {
                 fps = 1000 / timeThisFrame;
-            }
-            if(!paused) {
-                if((startFrameTime - lastAnimTime) > animationInterval) {
-                    lastAnimTime = System.currentTimeMillis();
-                    uhOrOh = !uhOrOh;
-                }
             }
         }
     }
@@ -206,6 +204,36 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
             if(invaderBullets[i].getImpactPoint() > screenY) {
                 invaderBullets[i].setInactive();
             }
+            if(invaderBullets[i].getStatus()) {
+                if(RectF.intersects(player.getRect(), invaderBullets[i].getRect())) {
+                    invaderBullets[i].setInactive();
+                    playerLives = playerLives - invaderBullets[i].damage;
+                    if(playerLives <= 0) {
+                        if(sEnabled) {
+                            soundPool.play(playerExplodeID, 1, 1, 0, 0, 1);
+                        }
+                        if(score > menu.hiScore) {
+                            menu.hiScore = score;
+                            menu.handleScore();
+                        }
+                        paused = true;
+                        playerLives = 3;
+                        score = 0;
+                        prepareLevel();
+                    }
+                }
+                for(int j = 0; j < numBlocks; j++) {
+                    if(blocks[j].getVisibility()) {
+                        if(RectF.intersects(invaderBullets[i].getRect(), blocks[j].getRect())) {
+                            invaderBullets[i].setInactive();
+                            blocks[j].setInvisible();
+                            if(sEnabled) {
+                                soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
+                            }
+                        }
+                    }
+                }
+            }
         }
         if(bullet.getStatus()) {
             for(int i = 0; i < numInvaders; i++){
@@ -227,42 +255,6 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                             playerLives++;
                             prepareLevel();
                         }
-                    }
-                }
-            }
-        }
-        for(int i = 0; i < invaderBullets.length; i++) {
-            if(invaderBullets[i].getStatus()) {
-                for(int j = 0; j < numBlocks; j++) {
-                    if(blocks[j].getVisibility()) {
-                        if(RectF.intersects(invaderBullets[i].getRect(), blocks[j].getRect())) {
-                            invaderBullets[i].setInactive();
-                            blocks[j].setInvisible();
-                            if(sEnabled) {
-                                soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        for(int i = 0; i < invaderBullets.length; i++) {
-            if(invaderBullets[i].getStatus()) {
-                if(RectF.intersects(player.getRect(), invaderBullets[i].getRect())) {
-                    invaderBullets[i].setInactive();
-                    playerLives = playerLives - invaderBullets[i].damage;
-                    if(playerLives <= 0) {
-                        if(sEnabled) {
-                            soundPool.play(playerExplodeID, 1, 1, 0, 0, 1);
-                        }
-                        if(score > menu.hiScore) {
-                            menu.hiScore = score;
-                            menu.handleScore();
-                        }
-                        paused = true;
-                        playerLives = 3;
-                        score = 0;
-                        prepareLevel();
                     }
                 }
             }
