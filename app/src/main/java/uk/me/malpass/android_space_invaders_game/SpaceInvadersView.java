@@ -1,15 +1,19 @@
 package uk.me.malpass.android_space_invaders_game;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -17,6 +21,7 @@ import java.util.Random;
  */
 
 public class SpaceInvadersView  extends SurfaceView implements Runnable  {
+    MainMenu menu;
     public Context context;
     public Thread gameThread = null;
     public SurfaceHolder holder;
@@ -45,17 +50,43 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
     public int remainingInvaders;
     public boolean started = false;
 
-    public SpaceInvadersView(Context context, int x, int y)  {
+    private boolean sEnabled = true;
+    private SoundPool soundPool;
+    private int playerExplodeID = -1;
+    private int invaderExplodeID = -1;
+    private int shootID = -1;
+    private int damageShelterID = -1;
+
+    public SpaceInvadersView(Context context, int x, int y, MainMenu menu)  {
         super(context);
         this.context = context;
         holder = getHolder();
         paint = new Paint();
         screenX = x;
         screenY = y;
+        this.menu = menu;
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC,0);
+
+        try{
+
+            AssetManager assetManager = context.getAssets();
+            AssetFileDescriptor descriptor;
+            descriptor = assetManager.openFd("shoot.ogg");
+            shootID = soundPool.load(descriptor, 0);
+            descriptor = assetManager.openFd("invaderexplode.ogg");
+            invaderExplodeID = soundPool.load(descriptor, 0);
+            descriptor = assetManager.openFd("damageshelter.ogg");
+            damageShelterID = soundPool.load(descriptor, 0);
+            descriptor = assetManager.openFd("playerexplode.ogg");
+            playerExplodeID = soundPool.load(descriptor, 0);
+        }catch(IOException e){
+            Log.e("error", "failed to load sound files");
+        }
     }
     public void prepareLevel() {
         started = true;
         animationInterval = 1000;
+        sEnabled = menu.sound;
         player = new uk.me.malpass.android_space_invaders_game.Player(context, screenX, screenY);
         bullet = new BasicBullet(screenY);
         for(int i = 0; i < invaderBullets.length; i++) {
@@ -130,6 +161,9 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                     }
                     if(invaderBullets[nextBullet].shoot(invaders[i].getX() + invaders[i].getLength() / 2, invaders[i].getY(), bullet.DOWN)) {
                         nextBullet++;
+                        if(sEnabled) {
+                            soundPool.play(shootID, 1, 1, 0, 0, 1);
+                        }
                         if(nextBullet == maxInvaderBullets) {
                             nextBullet = 0;
                         }
@@ -150,8 +184,9 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                 invaders[i].dropDown();
                 if(invaders[i].getY() > screenY -screenY / 10) {
                     lost = true;
-                    if(score > MainMenu.hiScore) {
-                        MainMenu.hiScore = score;
+                    if(score > menu.hiScore) {
+                        menu.hiScore = score;
+                        menu.handleScore();
                     }
                     score = 0;
                     playerLives = 3;
@@ -177,6 +212,9 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                 if(invaders[i].getVisible()) {
                     if(RectF.intersects(bullet.getRect(), invaders[i].getRect())) {
                         if(invaders[i].destroyed(bullet.damage)) {
+                            if(sEnabled) {
+                                soundPool.play(invaderExplodeID, 1, 1, 0, 0, 1);
+                            }
                             invaders[i].setInvisible();
                             remainingInvaders--;
                         }
@@ -192,32 +230,39 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                     }
                 }
             }
-            for(int i = 0; i < invaderBullets.length; i++) {
-                if(invaderBullets[i].getStatus()) {
-                    for(int j = 0; j < numBlocks; j++) {
-                        if(blocks[j].getVisibility()) {
-                            if(RectF.intersects(invaderBullets[i].getRect(), blocks[j].getRect())) {
-                                invaderBullets[i].setInactive();
-                                blocks[j].setInvisible();
+        }
+        for(int i = 0; i < invaderBullets.length; i++) {
+            if(invaderBullets[i].getStatus()) {
+                for(int j = 0; j < numBlocks; j++) {
+                    if(blocks[j].getVisibility()) {
+                        if(RectF.intersects(invaderBullets[i].getRect(), blocks[j].getRect())) {
+                            invaderBullets[i].setInactive();
+                            blocks[j].setInvisible();
+                            if(sEnabled) {
+                                soundPool.play(damageShelterID, 1, 1, 0, 0, 1);
                             }
                         }
                     }
                 }
             }
-            for(int i = 0; i < invaderBullets.length; i++) {
-                if(invaderBullets[i].getStatus()) {
-                    if(RectF.intersects(player.getRect(), invaderBullets[i].getRect())) {
-                        invaderBullets[i].setInactive();
-                        playerLives = playerLives - invaderBullets[i].damage;
-                        if(playerLives <= 0) {
-                            paused = true;
-                            playerLives = 3;
-                            if(score > MainMenu.hiScore) {
-                                MainMenu.hiScore = score;
-                            }
-                            score = 0;
-                            prepareLevel();
+        }
+        for(int i = 0; i < invaderBullets.length; i++) {
+            if(invaderBullets[i].getStatus()) {
+                if(RectF.intersects(player.getRect(), invaderBullets[i].getRect())) {
+                    invaderBullets[i].setInactive();
+                    playerLives = playerLives - invaderBullets[i].damage;
+                    if(playerLives <= 0) {
+                        if(sEnabled) {
+                            soundPool.play(playerExplodeID, 1, 1, 0, 0, 1);
                         }
+                        if(score > menu.hiScore) {
+                            menu.hiScore = score;
+                            menu.handleScore();
+                        }
+                        paused = true;
+                        playerLives = 3;
+                        score = 0;
+                        prepareLevel();
                     }
                 }
             }
@@ -285,7 +330,9 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                 }
                 if(motionEvent.getY() < screenY - screenY / 8) {
                     if(bullet.shoot(player.getX() + player.getLength() / 2, screenY, bullet.UP)) {
-                      /*POSSIBLE SOUND INSERT*/
+                        if(sEnabled) {
+                            soundPool.play(shootID, 1, 1, 0, 0, 1);
+                        }
                     }
                 }
                 break;

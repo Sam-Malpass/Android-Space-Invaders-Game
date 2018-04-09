@@ -34,10 +34,18 @@ public class Player {
     }
     public void update(long fps) {
         if(moving == LEFT) {
-            x = x - speed / fps;
+            if(x < 0) {
+            }
+            else {
+                x = x - speed / fps;
+            }
         }
         if(moving == RIGHT) {
-            x = x + speed / fps;
+            if(x + length > (length *10)) {
+            }
+            else {
+                x = x + speed / fps;
+            }
         }
         rect.top = y;
         rect.bottom = y + height;
