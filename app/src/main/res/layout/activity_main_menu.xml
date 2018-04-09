@@ -35,38 +35,9 @@
         android:layout_width="166dp"
         android:layout_height="59dp"
         android:layout_marginTop="12dp"
-        android:text="Leaderboard"
+        android:text="Highscore"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/play" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="166dp"
-        android:layout_height="59dp"
-        android:layout_marginTop="80dp"
-        app:layout_constraintEnd_toEndOf="@+id/play"
-        app:layout_constraintTop_toBottomOf="@+id/play">
-    </com.google.android.gms.common.SignInButton>
-
-    <TextView
-        android:id="@+id/loggedIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="212dp"
-        android:layout_marginStart="213dp"
-        android:text="Logged in as:"
-        app:layout_constraintEnd_toEndOf="@+id/title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
-
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="N/A"
-        app:layout_constraintBaseline_toBaselineOf="@+id/loggedIn"
-        app:layout_constraintStart_toEndOf="@+id/loggedIn" />
 
 </android.support.constraint.ConstraintLayout>
