@@ -29,7 +29,7 @@ public class MainMenu extends Activity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                setContentView(R.layout.activity_highscore);
             }
         });
     }
