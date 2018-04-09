@@ -10,8 +10,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.google.android.gms.games.Player;
-
 import java.util.Random;
 
 /**

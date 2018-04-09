@@ -25,6 +25,12 @@ public class MainMenu extends Activity {
                 SpaceInvadersView.prepareLevel();
             }
         });
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 
