@@ -9,6 +9,7 @@ import android.widget.Button;
 
 public class MainMenu extends Activity {
     SpaceInvadersView SpaceInvadersView;
+    public static int hiScore = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

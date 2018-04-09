@@ -150,6 +150,9 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                 invaders[i].dropDown();
                 if(invaders[i].getY() > screenY -screenY / 10) {
                     lost = true;
+                    if(score > MainMenu.hiScore) {
+                        MainMenu.hiScore = score;
+                    }
                     score = 0;
                     playerLives = 3;
                 }
@@ -209,6 +212,9 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                         if(playerLives <= 0) {
                             paused = true;
                             playerLives = 3;
+                            if(score > MainMenu.hiScore) {
+                                MainMenu.hiScore = score;
+                            }
                             score = 0;
                             prepareLevel();
                         }
