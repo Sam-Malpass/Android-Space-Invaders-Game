@@ -22,32 +22,32 @@ import java.util.Random;
 
 public class SpaceInvadersView  extends SurfaceView implements Runnable  {
     MainMenu menu;
-    public Context context;
-    public Thread gameThread = null;
-    public SurfaceHolder holder;
-    public volatile boolean playing;
-    public boolean paused = true;
-    public Canvas canvas;
-    public Paint paint;
-    public long fps;
-    public long timeThisFrame;
-    public int screenX;
-    public int screenY;
-    public uk.me.malpass.android_space_invaders_game.Player player;
-    public Bullet bullet;
-    public Invader[] invaders = new Invader[60];
-    public int numInvaders;
-    public boolean uhOrOh = true;
-    public int animationInterval;
-    public long lastAnimTime;
-    public Bullet[] invaderBullets = new Bullet[200];
-    public int nextBullet;
-    public int maxInvaderBullets = 10;
-    public Brick[] blocks = new Brick[400];
-    public int numBlocks;
-    public int score;
-    public int playerLives = 3;
-    public int remainingInvaders;
+    private Context context;
+    private Thread gameThread = null;
+    private SurfaceHolder holder;
+    private volatile boolean playing;
+    private boolean paused = true;
+    private Canvas canvas;
+    private Paint paint;
+    private long fps;
+    private long timeThisFrame;
+    private int screenX;
+    private int screenY;
+    private uk.me.malpass.android_space_invaders_game.Player player;
+    private Bullet bullet;
+    private Invader[] invaders = new Invader[60];
+    private int numInvaders;
+    private boolean uhOrOh = true;
+    private int animationInterval;
+    private long lastAnimTime;
+    private Bullet[] invaderBullets = new Bullet[200];
+    private int nextBullet;
+    private int maxInvaderBullets = 10;
+    private Brick[] blocks = new Brick[400];
+    private int numBlocks;
+    private int score;
+    private int playerLives = 3;
+    private int remainingInvaders;
     public boolean started = false;
 
     private boolean sEnabled = true;
@@ -56,6 +56,8 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
     private int invaderExplodeID = -1;
     private int shootID = -1;
     private int damageShelterID = -1;
+    private boolean tEnabled = true;
+    private boolean pEnabled = true;
 
     public SpaceInvadersView(Context context, int x, int y, MainMenu menu)  {
         super(context);
@@ -87,6 +89,8 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
         started = true;
         animationInterval = 1000;
         sEnabled = menu.sound;
+        tEnabled = menu.tough;
+        pEnabled = menu.power;
         player = new uk.me.malpass.android_space_invaders_game.Player(context, screenX, screenY);
         bullet = new BasicBullet(screenY);
         for(int i = 0; i < invaderBullets.length; i++) {
@@ -102,10 +106,20 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                         invaders[numInvaders] = new BasicInvader(context, row, column, screenX, screenY);
                         break;
                     case 2:
-                        invaders[numInvaders] = new ToughInvader(context, row, column, screenX, screenY);
+                        if(tEnabled) {
+                            invaders[numInvaders] = new ToughInvader(context, row, column, screenX, screenY);
+                        }
+                        else {
+                            invaders[numInvaders] = new BasicInvader(context, row, column, screenX, screenY);
+                        }
                         break;
                     case 3:
-                        invaders[numInvaders] = new PowerInvader(context, row, column, screenX, screenY);
+                        if(pEnabled) {
+                            invaders[numInvaders] = new PowerInvader(context, row, column, screenX, screenY);
+                        }
+                        else {
+                            invaders[numInvaders] = new BasicInvader(context, row, column, screenX, screenY);
+                        }
                         break;
                     default:
                         invaders[numInvaders] = new BasicInvader(context, row, column, screenX, screenY);

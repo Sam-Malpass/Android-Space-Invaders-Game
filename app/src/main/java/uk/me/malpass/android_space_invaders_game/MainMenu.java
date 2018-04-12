@@ -13,12 +13,14 @@ import android.widget.ToggleButton;
 
 
 public class MainMenu extends Activity {
-    SpaceInvadersView SpaceInvadersView;
+    public boolean sound = true;
+    public boolean tough = true;
+    public boolean power = true;
+    public int hiScore = 0;
+    private SpaceInvadersView SpaceInvadersView;
     private boolean hflag;
     private boolean sflag;
-    public boolean sound = true;
-    public int hiScore = 0;
-    public SharedPreferences prefs;
+    private SharedPreferences prefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,15 +62,29 @@ public class MainMenu extends Activity {
 
     }
 
-    public void settingsViewer() {
+    private void settingsViewer() {
         sflag = true;
         setContentView(R.layout.activity_settings);
         final ToggleButton soundTog = findViewById(R.id.sound_on_off);
+        final ToggleButton toughTog = findViewById(R.id.tough_on_off);
+        final ToggleButton powerTog = findViewById(R.id.power_on_off);
         if(sound) {
             soundTog.setChecked(true);
         }
         else {
             soundTog.setChecked(false);
+        }
+        if(tough) {
+            toughTog.setChecked(true);
+        }
+        else {
+            toughTog.setChecked(false);
+        }
+        if(power) {
+            powerTog.setChecked(true);
+        }
+        else {
+            powerTog.setChecked(false);
         }
         soundTog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,9 +99,35 @@ public class MainMenu extends Activity {
                 }
             }
         });
+        toughTog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(tough) {
+                    toughTog.setChecked(false);
+                    tough = false;
+                }
+                else {
+                    toughTog.setChecked(true);
+                    tough = true;
+                }
+            }
+        });
+        powerTog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(power) {
+                    powerTog.setChecked(false);
+                    power = false;
+                }
+                else {
+                    powerTog.setChecked(true);
+                    power = true;
+                }
+            }
+        });
     }
 
-    public void scoreViewer() {
+    private void scoreViewer() {
         hflag = true;
         int score = prefs.getInt("score", 0);
         setContentView(R.layout.activity_highscore);

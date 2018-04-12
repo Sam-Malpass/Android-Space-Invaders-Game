@@ -7,14 +7,14 @@ import android.graphics.RectF;
  */
 
 public abstract class Bullet {
-    public float x;
-    public float y;
+    private float x;
+    private float y;
     public RectF rect;
     public final int UP = 0;
     public final int DOWN = 1;
-    public int heading = -1;
-    public float speed = 350;
-    public int width = 1;
+    private int heading = -1;
+    private float speed = 350;
+    private int width = 1;
     public int height;
     public boolean active;
     public int damage;

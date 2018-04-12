@@ -11,7 +11,7 @@ import java.util.Random;
 
 public abstract class Invader {
     public RectF rect;
-    public Random generator = new Random();
+    private Random generator = new Random();
     public Bitmap bitmap1;
     public Bitmap bitmap2;
     public float length;
@@ -19,9 +19,9 @@ public abstract class Invader {
     public float x;
     public float y;
     public float speed;
-    public final int LEFT = 1;
-    public final int RIGHT = 2;
-    public int moving = RIGHT;
+    private final int LEFT = 1;
+    private final int RIGHT = 2;
+    private int moving = RIGHT;
     public boolean visible;
     public int lives;
 

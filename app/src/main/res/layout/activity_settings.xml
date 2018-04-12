@@ -9,16 +9,13 @@
         android:id="@+id/settings"
         android:layout_width="262dp"
         android:layout_height="67dp"
-        android:layout_marginBottom="69dp"
         android:layout_marginStart="164dp"
         android:layout_marginTop="17dp"
         android:text="Settings"
         android:textSize="50sp"
         android:typeface="monospace"
-        app:layout_constraintBottom_toTopOf="@+id/sound_label"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.189" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ToggleButton
         android:id="@+id/sound_on_off"
@@ -34,14 +31,59 @@
         android:id="@+id/sound_label"
         android:layout_width="99dp"
         android:layout_height="57dp"
-        android:layout_marginBottom="189dp"
+        android:layout_marginBottom="172dp"
         android:layout_marginStart="220dp"
         android:text="Sound"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sound_on_off"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settings" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tough"
+        android:layout_width="308dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="84dp"
+        android:layout_marginStart="220dp"
+        android:text="Tough Invaders"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sound_on_off"
+        app:layout_constraintHorizontal_bias="0.623"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/power"
+        android:layout_width="282dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="220dp"
+        android:text="Power Invaders"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sound_on_off"
+        app:layout_constraintHorizontal_bias="0.699"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/tough_on_off"
+        android:layout_width="147dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="96dp"
+        android:layout_marginEnd="156dp"
+        android:text="ToggleButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/power_on_off"
+        android:layout_width="147dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="156dp"
+        android:text="ToggleButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

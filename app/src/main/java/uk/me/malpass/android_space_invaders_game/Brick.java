@@ -7,8 +7,8 @@ import android.graphics.RectF;
  */
 
 public class Brick {
-    public RectF rect;
-    public boolean visibile;
+    private RectF rect;
+    private boolean visibile;
     public Brick(int row, int column, int shelterNumber, int screenX, int screenY) {
         int width = screenX / 90;
         int height = screenY / 40;
