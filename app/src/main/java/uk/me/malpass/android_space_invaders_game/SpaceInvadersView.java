@@ -125,6 +125,14 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                         invaders[numInvaders] = new BasicInvader(context, row, column, screenX, screenY);
                         break;
                 }
+                if(menu.lTog) {
+                    if(menu.level[column][row] == 0) {
+                        invaders[numInvaders].setInvisible();
+                        continue;
+                    }
+                    numInvaders++;
+                    continue;
+                }
                 numInvaders++;
             }
         }
@@ -137,6 +145,9 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
                     numBlocks++;
                 }
             }
+        }
+        if(menu.lTog) {
+            menu.lTog = false;
         }
     }
     @Override
@@ -308,6 +319,7 @@ public class SpaceInvadersView  extends SurfaceView implements Runnable  {
             holder.unlockCanvasAndPost(canvas);
         }
     }
+
     public void pause() {
         playing = false;
         try {
